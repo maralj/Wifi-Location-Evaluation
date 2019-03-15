@@ -38,7 +38,7 @@ df$SPACEID<-as.factor(df$SPACEID)
 df$RELATIVEPOSITION<-as.factor(df$RELATIVEPOSITION)
 str(df)
 
-########## subsetting the dataset to improve computational efficiency ##########  
+########## subsetting the dataset by building ID to improve computational efficiency ##########  
 building_0 <- subset(df, df$BUILDINGID == 0)
 building_1 <- subset(df, df$BUILDINGID == 1)
 building_2 <- subset(df, df$BUILDINGID == 2)
@@ -65,6 +65,30 @@ which(colnames(bldg0_loc) == "LOCATION")
 which(colnames(bldg1_loc) == "LOCATION")
 which(colnames(bldg2_loc) == "LOCATION")
 
-bldg0_loc <- bldg0_loc[c(466, 1: 466)]
-bldg1_loc <- bldg1_loc[c(466, 1: 466)]
-bldg2_loc <- bldg2_loc[c(466, 1: 466)]
+#bldg0_loc <- bldg0_loc[c(466, 1: 466)]
+#bldg1_loc <- bldg1_loc[c(466, 1: 466)]
+#bldg2_loc <- bldg2_loc[c(466, 1: 466)]
+
+#Model Buidling
+library(caret)
+
+############################################ Data Modeling ############################################ 
+
+set.seed(123)
+nrow(building_0)
+str(bldg1_loc)
+
+bldg0_inTraining <- createDataPartition(bldg0_loc$LOCATION, p = .75, list = FALSE)
+bldg0_training <- bldg0_loc[bldg0_inTraining,]
+bldg0_testing <- bldg0_loc[-bldg0_inTraining,]
+
+bldg1_inTraining <- createDataPartition(bldg1_loc$LOCATION, p = .75, list = FALSE)
+bldg1_training <- bldg1_loc[bldg1_inTraining,]
+bldg1_testing <- bldg1_loc[-bldg1_inTraining,]
+
+bldg2_inTraining <- createDataPartition(bldg2_loc$LOCATION, p = .75, list = FALSE)
+bldg2_training <- bldg2_loc[bldg2_inTraining,]
+bldg2_testing <- bldg2_loc[-bldg2_inTraining,]
+
+# cross validation 
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
