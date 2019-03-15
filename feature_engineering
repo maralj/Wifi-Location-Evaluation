@@ -92,3 +92,15 @@ bldg2_testing <- bldg2_loc[-bldg2_inTraining,]
 
 # cross validation 
 fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
+
+############################################ C5.0 ############################################ 
+
+DT_0 <- system.time(dt_c50 <- train(LOCATION~., data = bldg0_training, method = 'C5.0', trControl=fitControl)) # X 
+DT_1 <- system.time(dt_c50_1 <- train(LOCATION~., data = bldg0_training, method = 'C5.0', trControl=fitControl)) # X 
+DT_2 <- system.time(dt_c50_2 <- train(LOCATION~., data = bldg0_training, method = 'C5.0', trControl=fitControl)) # X 
+
+# Reviewing Models 
+dt_c50
+dt_c50_1
+dt_c50_2
+
